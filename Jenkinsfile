@@ -16,15 +16,29 @@ pipeline {
       }
     }
     stage('Test') {
-      post {
-        always {
-          junit 'target/surefire-reports/*.xml'
+      parallel {
+        stage('Test') {
+          post {
+            always {
+              junit 'target/surefire-reports/*.xml'
 
+            }
+
+          }
+          steps {
+            sh 'mvn test'
+          }
         }
+        stage('Print MANIFEST') {
+          steps {
+            sh '''NAME=`mvn help:evaluate -Dexpression=project.name | grep "^[^\\[]"`
 
-      }
-      steps {
-        sh 'mvn test'
+VERSION=`mvn help:evaluate -Dexpression=project.version | grep "^[^\\[]"`
+
+unzip -q -c target/${NAME}-${VERSION}.jar META-INF/MANIFEST.MF
+'''
+          }
+        }
       }
     }
     stage('Deliver') {
