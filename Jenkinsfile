@@ -2,8 +2,17 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      steps {
-        sh 'mvn -B -DskipTests clean package'
+      parallel {
+        stage('Build') {
+          steps {
+            sh 'mvn -B -DskipTests clean package'
+          }
+        }
+        stage('Make File Executable') {
+          steps {
+            sh 'sh chmod +x jenkins/scripts/deliver.sh'
+          }
+        }
       }
     }
     stage('Test') {
@@ -19,17 +28,8 @@ pipeline {
       }
     }
     stage('Deliver') {
-      parallel {
-        stage('Deliver') {
-          steps {
-            sh 'jenkins/scripts/deliver.sh'
-          }
-        }
-        stage('Make File Executable') {
-          steps {
-            sh 'sh chmod +x jenkins/scripts/deliver.sh'
-          }
-        }
+      steps {
+        sh 'jenkins/scripts/deliver.sh'
       }
     }
   }
