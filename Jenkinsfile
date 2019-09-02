@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Make File Executable') {
           steps {
-            sh 'sh chmod +x jenkins/scripts/deliver.sh'
+            sh 'chmod +x jenkins/scripts/deliver.sh'
           }
         }
       }
