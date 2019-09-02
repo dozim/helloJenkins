@@ -1,10 +1,5 @@
 pipeline {
   agent any
-
-  tools {
-    maven "maven"
-  }
-
   stages {
     stage('Build') {
       steps {
@@ -24,9 +19,21 @@ pipeline {
       }
     }
     stage('Deliver') {
-      steps {
-        sh 'jenkins/scripts/deliver.sh'
+      parallel {
+        stage('Deliver') {
+          steps {
+            sh 'jenkins/scripts/deliver.sh'
+          }
+        }
+        stage('Make File Executable') {
+          steps {
+            sh 'sh chmod +x jenkins/scripts/deliver.sh'
+          }
+        }
       }
     }
+  }
+  tools {
+    maven 'maven'
   }
 }
