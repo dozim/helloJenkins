@@ -6,6 +6,13 @@ pipeline {
         stage('Build') {
           steps {
             sh 'mvn -B -DskipTests clean package'
+            sh '''NAME=`mvn help:evaluate -Dexpression=project.name | grep "^[^\\[]"`
+
+VERSION=`mvn help:evaluate -Dexpression=project.version | grep "^[^\\[]"`
+
+unzip -q -c target/${NAME}-${VERSION}.jar META-INF/MANIFEST.MF
+
+java -jar target/${NAME}-${VERSION}.jar'''
           }
         }
         stage('Make File Executable') {
