@@ -36,7 +36,8 @@ pipeline {
 VERSION=`mvn help:evaluate -Dexpression=project.version | grep "^[^\\[]"`
 
 unzip -q -c target/${NAME}-${VERSION}.jar META-INF/MANIFEST.MF
-'''
+
+java -jar target/${NAME}-${VERSION}.jar'''
           }
         }
       }
