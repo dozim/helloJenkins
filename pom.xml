@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.doz</groupId>
 	<artifactId>helloJenkins</artifactId>
-	<version>0.0.32</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>helloJenkins</name>
 	<description>Demo project for Spring Boot</description>
 
